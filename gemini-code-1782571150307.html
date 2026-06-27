@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Dự Đoán World Cup Nhận Thưởng</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Nhúng thư viện Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Khu vực đăng nhập / thông tin user -->
+        <div id="authSection" class="auth-section">
+            <div id="authForms">
+                <h3>Đăng Nhập / Đăng Ký Tài Khoản</h3>
+                <input type="text" id="username" placeholder="Tên tài khoản (viết liền không dấu)">
+                <input type="password" id="password" placeholder="Mật khẩu">
+                <div class="auth-buttons">
+                    <button id="loginBtn">Đăng Nhập</button>
+                    <button id="registerBtn" class="btn-secondary">Đăng Ký Mới</button>
+                </div>
+            </div>
+            <div id="userWelcome" class="hidden">
+                <div class="user-info">
+                    <span id="welcomeText">Chào, ...!</span>
+                    <span class="reward-badge">Điểm thưởng: <strong id="userPoints">0</strong> Xu</span>
+                </div>
+                <button id="logoutBtn" class="btn-sm">Đăng xuất</button>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- Lịch thi đấu nhúng trực tiếp & Tỷ lệ -->
+        <h2>Lịch Thi Đấu & Tỷ Lệ Tham Khảo</h2>
+        <div class="match-card">
+            <div class="match-header">Trận Đấu Sắp Diễn Ra</div>
+            <div class="match-teams">
+                <div class="team">
+                    <span class="team-name" id="matchTeamA">Brazil</span>
+                    <span class="odds" id="oddsA">Tỷ lệ: 1.85</span>
+                </div>
+                <div class="vs-circle">VS</div>
+                <div class="team">
+                    <span class="team-name" id="matchTeamB">Pháp</span>
+                    <span class="odds" id="oddsB">Tỷ lệ: 2.10</span>
+                </div>
+            </div>
+            <div class="odds-draw" id="oddsDraw">Tỷ lệ Hòa: 3.40</div>
+
+            <!-- Form dự đoán dành cho User -->
+            <div id="predictionForm" class="prediction-form hidden">
+                <p class="section-title">Chọn dự đoán của bạn (Nhận ngay 100 Xu nếu đoán đúng):</p>
+                <div class="predict-choices">
+                    <button class="btn-choice" onclick="submitPrediction('Team A')">Brazil Thắng</button>
+                    <button class="btn-choice" onclick="submitPrediction('Draw')">Hòa</button>
+                    <button class="btn-choice" onclick="submitPrediction('Team B')">Pháp Thắng</button>
+                </div>
+                <p id="currentPredictionStatus" class="status-text"></p>
+            </div>
+            <p id="loginReminder" class="alert-text">Vui lòng đăng nhập để tham gia dự đoán nhận thưởng.</p>
+        </div>
+
+        <!-- Bảng xếp hạng phần thưởng công đồng -->
+        <div class="leaderboard">
+            <h3>Bảng Xếp Hạng Đại Cao Thủ</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Hạng</th>
+                        <th>Tên Tài Khoản</th>
+                        <th>Điểm Thưởng</th>
+                    </tr>
+                </thead>
+                <tbody id="leaderboardBody">
+                    <tr><td colspan="3">Đang tải dữ liệu...</td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Nút bấm giả lập kết quả dành cho Admin (Dùng để test tính năng thưởng) -->
+        <div class="admin-panel">
+            <p><strong>Khu vực chạy thử nghiệm (Admin):</strong></p>
+            <button onclick="simulateMatchResult('Team A')" class="btn-sm">Giả lập: Brazil Thắng</button>
+            <button onclick="simulateMatchResult('Draw')" class="btn-sm">Giả lập: Hòa</button>
+            <button onclick="simulateMatchResult('Team B')" class="btn-sm">Giả lập: Pháp Thắng</button>
+        </div>
+
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
